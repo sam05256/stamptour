@@ -50,6 +50,7 @@ export default function MainPage() {
   const [participantName, setParticipantName] = useState('')
   const [collectedIds, setCollectedIds] = useState<string[]>([])
   const [showNewStamp, setShowNewStamp] = useState<string | null>(null)
+  const [isFirstVisit, setIsFirstVisit] = useState(true)
 
   useEffect(() => {
     const state = getState()
@@ -57,6 +58,15 @@ export default function MainPage() {
     setParticipantName(state.participant.name)
     setCollectedIds(state.stamps.map(s => s.locationId))
     preloadSounds()
+
+    // 첫 방문 확인
+    const hasVisited = localStorage.getItem('mainPageFirstVisit')
+    if (hasVisited) {
+      setIsFirstVisit(false)
+    } else {
+      localStorage.setItem('mainPageFirstVisit', 'true')
+      setIsFirstVisit(true)
+    }
 
     const params = new URLSearchParams(window.location.search)
     const newStamp = params.get('new')
@@ -483,13 +493,28 @@ export default function MainPage() {
 
       {/* ── QR 스캔 버튼 ── */}
       <div className="fixed bottom-4 left-0 right-0 max-w-md mx-auto px-4 z-30">
+        {isFirstVisit && (
+          <motion.p
+            className="pixel text-center text-green-400 mb-2"
+            style={{ fontSize: '12px', textShadow: '1px 1px #0d3320' }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            🎯 QR 코드를 스캔해주세요!
+          </motion.p>
+        )}
         <motion.button
-          onClick={() => { playSound('transition'); router.push('/scan') }}
-          className="w-full mc-btn mc-btn-green"
+          onClick={() => {
+            setIsFirstVisit(false)
+            playSound('transition')
+            router.push('/scan')
+          }}
+          className={`w-full mc-btn mc-btn-green ${isFirstVisit ? 'animate-pulse' : ''}`}
           style={{ fontSize: '12px', padding: '16px' }}
           whileTap={{ scale: 0.95 }}
-          animate={{ y: [0, -4, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          animate={isFirstVisit ? { y: [0, -4, 0], boxShadow: ['0 0 0 0 rgba(122, 200, 50, 0.7)', '0 0 0 10px rgba(122, 200, 50, 0)'] } : { y: [0, -4, 0] }}
+          transition={isFirstVisit ? { duration: 1.5, repeat: Infinity } : { duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
           📷  QR 스캔하기
         </motion.button>
