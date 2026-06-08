@@ -279,9 +279,6 @@ export default function AdminPage() {
             ))}
           </div>
 
-          <div className="px-4 py-6 text-center text-xs text-gray-400">
-            ※ 현재 데모 데이터입니다. Supabase 연동 시 실시간 업데이트됩니다.
-          </div>
         </>
       )}
 
@@ -381,12 +378,11 @@ export default function AdminPage() {
       {tab === 'analysis' && (
         <div className="px-4 py-6 space-y-6">
           {/* 통계 카드 */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             {[
-              { label: '평균 완료 시간', value: '1시간 30분', icon: '⏱️' },
-              { label: '가장 어려운 미션', value: 'QA룸 (65% 실패)', icon: '❌' },
-              { label: '완료율', value: '40% (2명/5명)', icon: '📊' },
-              { label: '평균 방문 시간', value: '약 26분/장소', icon: '⏲️' },
+              { label: '총 참여자', value: data.length, icon: '👥' },
+              { label: '완료자', value: completed, icon: '🎉' },
+              { label: '완료율', value: data.length > 0 ? `${Math.round((completed / data.length) * 100)}%` : '0%', icon: '📊' },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -407,8 +403,8 @@ export default function AdminPage() {
             <h3 className="font-black text-lg mb-4 text-gray-800">📍 장소별 통계</h3>
             <div className="space-y-3">
               {LOCATIONS.map((loc) => {
-                const completed = Math.floor(Math.random() * 5) + 1;
-                const success = Math.floor((completed / 5) * 100);
+                const locStamps = data.filter(p => p.stamps.includes(loc.id)).length
+                const success = data.length > 0 ? Math.round((locStamps / data.length) * 100) : 0
                 return (
                   <div key={loc.id}>
                     <div className="flex items-center justify-between mb-1">
@@ -427,9 +423,6 @@ export default function AdminPage() {
             </div>
           </div>
 
-          <div className="px-4 py-6 text-center text-xs text-gray-400">
-            ※ 현재 데모 데이터입니다. Supabase 연동 시 실시간 업데이트됩니다.
-          </div>
         </div>
       )}
 
@@ -471,9 +464,6 @@ export default function AdminPage() {
             </div>
           </div>
 
-          <div className="px-4 py-6 text-center text-xs text-gray-400">
-            ※ 현재 데모 데이터입니다. Supabase 연동 시 실시간 업데이트됩니다.
-          </div>
         </div>
       )}
 
