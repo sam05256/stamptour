@@ -12,6 +12,7 @@ export default function CompletePage() {
   const router = useRouter()
   const [name, setName] = useState('')
   const [confettiFired, setConfettiFired] = useState(false)
+  const [exchangeClicked, setExchangeClicked] = useState(false)
 
   useEffect(() => {
     const state = getState()
@@ -237,16 +238,19 @@ export default function CompletePage() {
                 선생님께 이 화면을 보여주세요! 🎁
               </p>
             </div>
-            <div
-              className="mt-3 px-3 py-1.5 inline-block"
+            <button
+              onClick={() => setExchangeClicked(true)}
+              disabled={exchangeClicked}
+              className="mt-3 px-3 py-1.5 inline-block pixel text-gray-300 font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               style={{
-                background: '#555',
+                fontSize: '13px',
+                background: exchangeClicked ? '#333' : '#555',
                 border: '2px solid #000',
                 boxShadow: 'inset -2px -2px 0 #333, inset 2px 2px 0 #777',
               }}
             >
-              <p className="pixel text-gray-300" style={{ fontSize: '13px' }}>📍 1층 교환 데스크</p>
-            </div>
+              {exchangeClicked ? '✅ 교환 완료!' : '🎁 교환 완료 (선생님 확인)'}
+            </button>
           </div>
         </motion.div>
 
