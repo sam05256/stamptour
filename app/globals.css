@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import "tailwindcss";
+
+:root {
+  --mc-sky: #78a7cf;
+  --mc-grass: #5a8c2f;
+  --mc-dirt: #866043;
+  --mc-stone: #8b8b8b;
+  --mc-dark: #1a1a1a;
+  --mc-gold: #f7c52b;
+  --mc-panel: #c6c6c6;
+  --mc-panel-dark: #3c3c3c;
+}
+
+body {
+  background: var(--mc-sky);
+  color: #1a1a1a;
+  font-family: 'Galmuri11', 'Noto Sans KR', sans-serif;
+  overscroll-behavior: none;
+}
+
+/* ── Pixel font (영어: Press Start 2P / 한글: Galmuri11) ── */
+.pixel {
+  font-family: 'Press Start 2P', 'Galmuri11', monospace;
+}
+
+/* ── Minecraft panel (inventory / chest UI) ── */
+.mc-panel {
+  background: #c6c6c6;
+  border: 3px solid #000;
+  box-shadow:
+    inset -3px -3px 0 #555,
+    inset 3px 3px 0 #fff;
+}
+
+.mc-panel-dark {
+  background: #3c3c3c;
+  border: 3px solid #000;
+  box-shadow:
+    inset -3px -3px 0 #1a1a1a,
+    inset 3px 3px 0 #5c5c5c;
+}
+
+/* ── Minecraft button (gray) ── */
+.mc-btn {
+  background: #7f7f7f;
+  border: 3px solid #000;
+  color: #e0e0e0;
+  box-shadow: inset -3px -3px 0 #555, inset 3px 3px 0 #b0b0b0;
+  text-shadow: 2px 2px #3f3f3f;
+  cursor: pointer;
+  font-family: 'Press Start 2P', 'Galmuri11', monospace;
+  font-size: 13px;
+  line-height: 1.8;
+  padding: 12px 16px;
+  transition: filter 0.08s;
+  display: inline-block;
+  text-align: center;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.mc-btn:hover { filter: brightness(1.18); }
+.mc-btn:active {
+  box-shadow: inset 3px 3px 0 #555, inset -3px -3px 0 #b0b0b0;
+  transform: translateY(1px);
+}
+
+/* ── Green (confirm / start) button ── */
+.mc-btn-green {
+  background: #557a3a;
+  color: #fff;
+  box-shadow: inset -3px -3px 0 #2a3d1d, inset 3px 3px 0 #7ab356;
+  text-shadow: 2px 2px #1a2a0a;
+}
+
+/* ── Red button ── */
+.mc-btn-red {
+  background: #7a3a3a;
+  color: #fff;
+  box-shadow: inset -3px -3px 0 #3d1d1d, inset 3px 3px 0 #b35656;
+  text-shadow: 2px 2px #2a0a0a;
+}
+
+/* ── Disabled button ── */
+.mc-btn-disabled {
+  background: #555;
+  color: #777;
+  box-shadow: inset -3px -3px 0 #333, inset 3px 3px 0 #777;
+  cursor: not-allowed;
+  text-shadow: none;
+}
+
+/* ── Inventory slot (not collected) ── */
+.mc-slot {
+  background: #8b8b8b;
+  border: 3px solid #000;
+  box-shadow:
+    inset -2px -2px 0 #c8c8c8,
+    inset 2px 2px 0 #373737;
+}
+
+/* ── Collected slot (green block) ── */
+.mc-slot-done {
+  background: #557a3a;
+  border: 3px solid #000;
+  box-shadow:
+    inset -2px -2px 0 #2a3d1d,
+    inset 2px 2px 0 #7ab356;
+}
+
+/* ── Text input ── */
+.mc-input {
+  background: #000;
+  border: 3px solid #555;
+  box-shadow: inset 1px 1px 0 #888;
+  color: #e0e0e0;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700;
+  outline: none;
+  caret-color: #fff;
+}
+.mc-input:focus { border-color: #fff; }
+.mc-input::placeholder { color: #666; }
+
+/* ── Progress bar ── */
+.mc-xp-bg {
+  background: #000;
+  border: 2px solid #555;
+  padding: 2px;
+}
+.mc-xp-fill {
+  background: linear-gradient(180deg, #7ec832 0%, #5a8c2f 50%, #3d6b1e 51%, #4a7c24 100%);
+}
+
+/* ── Sky background pattern ── */
+.mc-sky-bg {
+  background-color: #78a7cf;
+  background-image:
+    /* pixel clouds */
+    linear-gradient(90deg, transparent 0%, #fff 0%),
+    radial-gradient(ellipse 30px 14px at 15% 12%, #ffffffcc 100%, transparent 100%),
+    radial-gradient(ellipse 22px 10px at 25% 9%, #ffffff99 100%, transparent 100%),
+    radial-gradient(ellipse 40px 16px at 70% 18%, #ffffffcc 100%, transparent 100%),
+    radial-gradient(ellipse 28px 12px at 82% 14%, #ffffff99 100%, transparent 100%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+}
+
+/* ── Grass block strip ── */
+.mc-grass-strip {
+  background: linear-gradient(180deg, #5a8c2f 0px, #5a8c2f 6px, #866043 6px, #866043 100%);
+}
+
+/* ── Tooltip / tag chip ── */
+.mc-tag {
+  background: #000;
+  color: #aaa;
+  border: 2px solid #555;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  padding: 3px 8px;
+}
+
+/* ── Hotbar ── */
+.mc-hotbar {
+  background: #373737;
+  border: 3px solid #000;
+  box-shadow:
+    inset -2px -2px 0 #1a1a1a,
+    inset 2px 2px 0 #5c5c5c;
+}
+
+/* ── Damage flash animation ── */
+@keyframes mc-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+/* ── XP orb bounce ── */
+@keyframes mc-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ── Block break ── */
+@keyframes mc-pop {
+  0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+  60% { transform: scale(1.2) rotate(4deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.mc-shake { animation: mc-shake 0.4s ease-in-out; }
+.mc-bounce { animation: mc-bounce 1.2s ease-in-out infinite; }
+.mc-pop { animation: mc-pop 0.5s cubic-bezier(0.36,0.07,0.19,0.97) forwards; }
