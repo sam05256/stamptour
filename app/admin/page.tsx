@@ -29,57 +29,62 @@ export default function AdminPage() {
   const [data, setData] = useState<ParticipantRow[]>([])
   const [filter, setFilter] = useState<'all' | 'completed' | 'incomplete'>('all')
   const [tab, setTab] = useState<'dashboard' | 'realtime' | 'analysis' | 'feedback' | 'qrcodes' | 'settings'>('dashboard')
+  const [loading, setLoading] = useState(false)
+
+  const fetchData = async () => {
+    setLoading(true)
+    try {
+      const { data: participants, error: participantsError } = await supabase
+        .from('participants')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (participantsError) throw participantsError
+
+      const enrichedData = await Promise.all(
+        (participants || []).map(async (p) => {
+          const { data: stamps } = await supabase
+            .from('stamps')
+            .select('location_id')
+            .eq('participant_id', p.id)
+
+          const { data: inputs } = await supabase
+            .from('mission_inputs')
+            .select('location_id, input_value')
+            .eq('participant_id', p.id)
+
+          const stampIds = stamps?.map(s => s.location_id) || []
+          const inputValues: Record<string, string> = {}
+          inputs?.forEach(i => {
+            inputValues[i.location_id] = i.input_value
+          })
+
+          return {
+            id: p.id,
+            name: p.name,
+            stamps: stampIds,
+            inputValues,
+            completedAt: p.completed_at,
+            createdAt: p.created_at,
+          }
+        })
+      )
+
+      setData(enrichedData)
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : JSON.stringify(err)
+      console.error('Failed to load data:', errorMsg)
+      setError('데이터 로드 실패: ' + errorMsg)
+      setTimeout(() => setError(''), 3000)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleLogin = async () => {
     if (pw === 'ahnlab2026') {
-      try {
-        // Supabase에서 참여자 데이터 가져오기
-        const { data: participants, error: participantsError } = await supabase
-          .from('participants')
-          .select('*')
-          .order('created_at', { ascending: false })
-
-        if (participantsError) throw participantsError
-
-        // 각 참여자의 스탬프와 미션 입력값 가져오기
-        const enrichedData = await Promise.all(
-          (participants || []).map(async (p) => {
-            const { data: stamps } = await supabase
-              .from('stamps')
-              .select('location_id')
-              .eq('participant_id', p.id)
-
-            const { data: inputs } = await supabase
-              .from('mission_inputs')
-              .select('location_id, input_value')
-              .eq('participant_id', p.id)
-
-            const stampIds = stamps?.map(s => s.location_id) || []
-            const inputValues: Record<string, string> = {}
-            inputs?.forEach(i => {
-              inputValues[i.location_id] = i.input_value
-            })
-
-            return {
-              id: p.id,
-              name: p.name,
-              stamps: stampIds,
-              inputValues,
-              completedAt: p.completed_at,
-              createdAt: p.created_at,
-            }
-          })
-        )
-
-        setAuthed(true)
-        setData(enrichedData)
-      } catch (err) {
-        const errorMsg = err instanceof Error ? err.message : JSON.stringify(err)
-        console.error('Failed to load data:', errorMsg)
-        console.error('Full error:', err)
-        setError('데이터 로드 실패: ' + errorMsg)
-        setTimeout(() => setError(''), 3000)
-      }
+      setAuthed(true)
+      await fetchData()
     } else {
       setError('비밀번호가 틀렸어요')
       setTimeout(() => setError(''), 1500)
@@ -131,8 +136,21 @@ export default function AdminPage() {
     <div className="min-h-screen bg-gray-50">
       {/* 헤더 */}
       <div className="bg-orange-500 text-white px-5 py-5">
-        <h1 className="font-black text-xl">📊 운영자 대시보드</h1>
-        <p className="text-orange-100 text-sm">2026 미래상상 코딩캠프 스탬프 투어</p>
+        <div className="flex items-center justify-between mb-2">
+          <div>
+            <h1 className="font-black text-xl">📊 운영자 대시보드</h1>
+            <p className="text-orange-100 text-sm">2026 미래상상 코딩캠프 스탬프 투어</p>
+          </div>
+          {tab === 'dashboard' && (
+            <button
+              onClick={fetchData}
+              disabled={loading}
+              className="bg-white/20 hover:bg-white/30 disabled:opacity-50 px-4 py-2 rounded-full font-bold text-sm transition-all"
+            >
+              {loading ? '⏳ 새로고침 중...' : '🔄 새로고침'}
+            </button>
+          )}
+        </div>
 
         {/* 탭 */}
         <div className="flex gap-2 mt-4 flex-wrap">
