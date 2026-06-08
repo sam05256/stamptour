@@ -168,15 +168,29 @@ export default function AdminPage() {
         </div>
 
         {/* 요약 카드 (대시보드 탭) */}
-        {tab === 'dashboard' && (
-          <div className="grid grid-cols-3 gap-3 mt-4">
-            {[
-              { label: '총 참여자', value: data.length, icon: '👥' },
-              { label: '완료자', value: completed, icon: '🎉' },
-              { label: '미완료자', value: data.length - completed, icon: '🔄' },
-              { label: '완료율', value: data.length > 0 ? `${Math.round((completed / data.length) * 100)}%` : '0%', icon: '📊' },
-              { label: '평균 시간', value: completed > 0 ? '1시간 30분' : '-', icon: '⏱️' },
-            ].map((card) => (
+        {tab === 'dashboard' && (() => {
+          const avgTime = completed > 0
+            ? data
+                .filter(p => p.completedAt)
+                .reduce((sum, p) => {
+                  const start = new Date(p.createdAt).getTime()
+                  const end = new Date(p.completedAt).getTime()
+                  return sum + (end - start)
+                }, 0) / completed
+            : 0
+          const hours = Math.floor(avgTime / (1000 * 60 * 60))
+          const minutes = Math.floor((avgTime % (1000 * 60 * 60)) / (1000 * 60))
+          const avgTimeStr = avgTime > 0 ? `${hours}시간 ${minutes}분` : '-'
+
+          return (
+            <div className="grid grid-cols-3 gap-3 mt-4">
+              {[
+                { label: '총 참여자', value: data.length, icon: '👥' },
+                { label: '완료자', value: completed, icon: '🎉' },
+                { label: '미완료자', value: data.length - completed, icon: '🔄' },
+                { label: '완료율', value: data.length > 0 ? `${Math.round((completed / data.length) * 100)}%` : '0%', icon: '📊' },
+                { label: '평균 완료 시간', value: avgTimeStr, icon: '⏱️' },
+              ].map((card) => (
               <div key={card.label} className="bg-white/20 rounded-2xl p-3 text-center">
                 <div className="text-xl">{card.icon}</div>
                 <div className="font-black text-2xl">{card.value}</div>
