@@ -148,8 +148,8 @@ export default function AdminPage() {
         {/* 탭 */}
         <div className="flex gap-2 mt-4 flex-wrap">
           {[
-            { id: 'dashboard', label: '📊 대시보드' },
-            { id: 'realtime', label: '📍 실시간' },
+            { id: 'realtime', label: '📍 현황 요약' },
+            { id: 'dashboard', label: '📊 완료 명단' },
             { id: 'analysis', label: '📈 분석' },
             { id: 'feedback', label: '💬 피드백' },
             { id: 'qrcodes', label: '📱 QR 코드' },
