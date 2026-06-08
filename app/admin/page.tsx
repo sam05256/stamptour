@@ -167,8 +167,8 @@ export default function AdminPage() {
           ))}
         </div>
 
-        {/* 요약 카드 (대시보드 탭) */}
-        {tab === 'dashboard' && (() => {
+        {/* 요약 카드 (실시간 탭) */}
+        {tab === 'realtime' && (() => {
           const avgTime = completed > 0
             ? data
                 .filter(p => p.completedAt)
@@ -330,6 +330,20 @@ export default function AdminPage() {
 
       {tab === 'realtime' && (
         <div className="px-4 py-6 space-y-4">
+          <div className="bg-white rounded-2xl shadow-sm p-4 mb-6">
+            <h3 className="font-black text-lg mb-4 text-gray-800">📊 현황 요약</h3>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div className="bg-orange-50 rounded-lg p-3">
+                <div className="text-xs text-gray-600">완료자</div>
+                <div className="font-black text-lg text-orange-600">{completed}명</div>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-3">
+                <div className="text-xs text-gray-600">미완료자</div>
+                <div className="font-black text-lg text-blue-600">{data.length - completed}명</div>
+              </div>
+            </div>
+          </div>
+
           <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-4 mb-6">
             <p className="text-sm text-green-700">
               <span className="font-bold">🟢 실시간 완료자:</span> 지금 이 시간에 7개 스탬프를 모두 획득한 사람
@@ -337,7 +351,7 @@ export default function AdminPage() {
           </div>
 
           <div className="bg-white rounded-2xl shadow-sm p-4">
-            <h3 className="font-black text-lg mb-4 text-gray-800">👥 완료 대기자 명단</h3>
+            <h3 className="font-black text-lg mb-4 text-gray-800">👥 완료 명단</h3>
             <div className="space-y-2">
               {data.filter(p => p.completedAt).map((p, i) => {
                 const completedTime = new Date(p.completedAt!).toLocaleTimeString('ko-KR');
@@ -356,20 +370,6 @@ export default function AdminPage() {
                   아직 완료한 사람이 없습니다
                 </div>
               )}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-sm p-4">
-            <h3 className="font-black text-lg mb-2 text-gray-800">📊 현황 요약</h3>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="bg-orange-50 rounded-lg p-3">
-                <div className="text-xs text-gray-600">완료자</div>
-                <div className="font-black text-lg text-orange-600">{completed}명</div>
-              </div>
-              <div className="bg-blue-50 rounded-lg p-3">
-                <div className="text-xs text-gray-600">미완료자</div>
-                <div className="font-black text-lg text-blue-600">{data.length - completed}명</div>
-              </div>
             </div>
           </div>
         </div>
