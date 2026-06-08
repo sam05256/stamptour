@@ -14,13 +14,6 @@ interface ParticipantRow {
   createdAt: string
 }
 
-const DEMO_DATA: ParticipantRow[] = [
-  { id: '1', name: '김민준', stamps: ['stairs', 'history', 'cafe', 'qa', 'soc', 'lounge', 'rooftop'], inputValues: { cafe: '아메리카노', rooftop: '로봇 만들기가 제일 재미있었어요!' }, completedAt: '2026-01-15T10:30:00Z', createdAt: '2026-01-15T09:00:00Z' },
-  { id: '2', name: '이서연', stamps: ['stairs', 'history', 'cafe', 'qa'], inputValues: { cafe: '오렌지 주스', rooftop: '' }, completedAt: null, createdAt: '2026-01-15T09:10:00Z' },
-  { id: '3', name: '박지호', stamps: ['stairs', 'history'], inputValues: {}, completedAt: null, createdAt: '2026-01-15T09:15:00Z' },
-  { id: '4', name: '최유나', stamps: ['stairs', 'history', 'cafe', 'qa', 'soc', 'lounge', 'rooftop'], inputValues: { cafe: '녹차', rooftop: '친구랑 게임 만들기!' }, completedAt: '2026-01-15T10:45:00Z', createdAt: '2026-01-15T09:20:00Z' },
-  { id: '5', name: '정도윤', stamps: ['stairs', 'history', 'cafe', 'qa', 'soc'], inputValues: { cafe: '콜라' }, completedAt: null, createdAt: '2026-01-15T09:25:00Z' },
-]
 
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false)
