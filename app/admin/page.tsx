@@ -197,8 +197,9 @@ export default function AdminPage() {
                 <div className="text-xs text-orange-100">{card.label}</div>
               </div>
             ))}
-          </div>
-        )}
+            </div>
+          )
+        })()}
       </div>
 
       {tab === 'dashboard' && (
