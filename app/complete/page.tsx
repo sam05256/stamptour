@@ -241,12 +241,15 @@ export default function CompletePage() {
             <button
               onClick={() => setExchangeClicked(true)}
               disabled={exchangeClicked}
-              className="mt-3 px-3 py-1.5 inline-block pixel text-gray-300 font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-3 px-3 py-1.5 inline-block pixel font-bold transition-all disabled:cursor-not-allowed"
               style={{
                 fontSize: '13px',
-                background: exchangeClicked ? '#333' : '#555',
+                background: exchangeClicked ? '#888' : '#FFA500',
+                color: exchangeClicked ? '#ccc' : '#000',
                 border: '2px solid #000',
-                boxShadow: 'inset -2px -2px 0 #333, inset 2px 2px 0 #777',
+                boxShadow: exchangeClicked
+                  ? 'inset -2px -2px 0 #555, inset 2px 2px 0 #aaa'
+                  : 'inset -2px -2px 0 #cc7700, inset 2px 2px 0 #ffcc00',
               }}
             >
               {exchangeClicked ? '✅ 교환 완료!' : '🎁 교환 완료 (선생님 확인)'}
