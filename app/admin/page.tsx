@@ -174,7 +174,7 @@ export default function AdminPage() {
                 .filter(p => p.completedAt)
                 .reduce((sum, p) => {
                   const start = new Date(p.createdAt).getTime()
-                  const end = new Date(p.completedAt).getTime()
+                  const end = new Date(p.completedAt!).getTime()
                   return sum + (end - start)
                 }, 0) / completed
             : 0
