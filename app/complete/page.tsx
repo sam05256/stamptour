@@ -24,15 +24,15 @@ export default function CompletePage() {
 
       // Supabase에 완료 시간 저장
       if (state.participant.supabaseId) {
-        supabase
+        (supabase
           .from('participants')
           .update({ completed_at: new Date().toISOString() })
-          .eq('id', state.participant.supabaseId)
+          .eq('id', state.participant.supabaseId) as any)
           .then(() => {
             fireConfetti()
             playSound('complete')
           })
-          .catch(error => {
+          .catch((error: any) => {
             console.error('Failed to update completion:', error)
             fireConfetti()
             playSound('complete')
