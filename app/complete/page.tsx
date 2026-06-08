@@ -12,7 +12,12 @@ export default function CompletePage() {
   const router = useRouter()
   const [name, setName] = useState('')
   const [confettiFired, setConfettiFired] = useState(false)
-  const [exchangeClicked, setExchangeClicked] = useState(false)
+  const [exchangeClicked, setExchangeClicked] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('exchangeCompleted') === 'true'
+    }
+    return false
+  })
 
   useEffect(() => {
     const state = getState()
@@ -239,7 +244,10 @@ export default function CompletePage() {
               </p>
             </div>
             <button
-              onClick={() => setExchangeClicked(true)}
+              onClick={() => {
+                setExchangeClicked(true)
+                localStorage.setItem('exchangeCompleted', 'true')
+              }}
               disabled={exchangeClicked}
               className="mt-3 px-3 py-1.5 inline-block pixel font-bold transition-all disabled:cursor-not-allowed"
               style={{
